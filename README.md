@@ -91,9 +91,6 @@ Errors are output as JSON to stderr with distinct exit codes:
 ## Supported URL formats
 
 - `https://www.instagram.com/p/SHORTCODE/`
-- `https://www.instagram.com/reel/SHORTCODE/`
-- `https://www.instagram.com/reels/SHORTCODE/`
-- `https://www.instagram.com/tv/SHORTCODE/`
 
 ## Notes
 
