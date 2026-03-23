@@ -1,4 +1,5 @@
 import os
+import sys
 import urllib.request
 from typing import Any
 
@@ -44,8 +45,10 @@ def scrape_post(
 
 def _fetch_post(shortcode: str) -> instaloader.Post:
     """Fetch a Post by shortcode using instaloader."""
-    loader = instaloader.Instaloader()
+    loader = instaloader.Instaloader(quiet=True)
+    saved_stderr = sys.stderr
     try:
+        sys.stderr = open(os.devnull, "w")
         return instaloader.Post.from_shortcode(loader.context, shortcode)
     except instaloader.QueryReturnedNotFoundException:
         raise PostNotAccessibleError(
@@ -61,6 +64,9 @@ def _fetch_post(shortcode: str) -> instaloader.Post:
         raise ScraperError(f"Network error fetching post: {e}")
     except instaloader.InstaloaderException as e:
         raise ScraperError(f"Failed to fetch post: {e}")
+    finally:
+        sys.stderr.close()
+        sys.stderr = saved_stderr
 
 
 def _collect_image_urls(post: instaloader.Post) -> list[str]:
